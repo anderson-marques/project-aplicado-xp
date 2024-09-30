@@ -1,0 +1,134 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Definição de Permission Sets para AWS IAM Identity Center (SSO)
+
+Parameters:
+  SSOInstanceArn:
+    Type: String
+    Description: "ARN da instância do AWS SSO (IAM Identity Center)"
+    AllowedPattern: "^arn:aws:sso:::instance/ssoins-[a-zA-Z0-9]{12}$"
+    ConstraintDescription: "O ARN da instância do SSO deve começar com 'arn:aws:sso:::instance/' seguido de um ID válido."
+
+Resources:
+  # Permission Set: Admin
+  AdminPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: Admin
+      Description: "Acesso total a todos os recursos AWS"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+      SessionDuration: PT8H
+
+  # Permission Set: PowerUser
+  PowerUserPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: PowerUser
+      Description: "Acesso a maioria dos serviços AWS, exceto IAM"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+      SessionDuration: PT8H
+
+  # Permission Set: ReadOnly
+  ReadOnlyPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: ReadOnly
+      Description: "Permissão somente de leitura para todos os recursos"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+      SessionDuration: PT8H
+
+  # Permission Set: Developer
+  DeveloperPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: Developer
+      Description: "Acesso a serviços de desenvolvimento como EC2, S3, Lambda"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
+      SessionDuration: PT8H
+
+  # Permission Set: Billing
+  BillingPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: Billing
+      Description: "Acesso para visualizar e gerenciar informações de faturamento"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/job-function/Billing
+      SessionDuration: PT8H
+
+  # Permission Set: NetworkAdministrator
+  NetworkAdministratorPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: NetworkAdministrator
+      Description: "Gerencia recursos de rede como VPC, subnets e gateways"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/job-function/NetworkAdministrator
+      SessionDuration: PT8H
+
+  # Permission Set: SecurityAudit
+  SecurityAuditPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: SecurityAudit
+      Description: "Acesso para visualizar configurações de segurança e logs"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/SecurityAudit
+      SessionDuration: PT8H
+
+  # Permission Set: DatabaseAdministrator
+  DatabaseAdministratorPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: DatabaseAdministrator
+      Description: "Gerencia serviços de banco de dados como RDS e DynamoDB"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/job-function/DatabaseAdministrator
+      SessionDuration: PT8H
+
+  # Permission Set: SupportUser
+  SupportUserPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: SupportUser
+      Description: "Permissão para gerenciar tíquetes de suporte AWS"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/job-function/SupportUser
+      SessionDuration: PT8H
+
+  # Permission Set: DataScientist
+  DataScientistPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: DataScientist
+      Description: "Acesso a serviços de análise de dados como Athena, Redshift"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/job-function/DataScientist
+      SessionDuration: PT8H
+
+  # Permission Set: ComplianceOfficer
+  ComplianceOfficerPermissionSet:
+    Type: AWS::SSO::PermissionSet
+    Properties: 
+      InstanceArn: !Ref SSOInstanceArn
+      Name: ComplianceOfficer
+      Description: "Acesso para revisar conformidade, sem modificar recursos"
+      ManagedPolicies:
+        - arn:aws:iam::aws:policy/AWSConfigUserAccess
+        - arn:aws:iam::aws:policy/AuditManagerReadOnlyAccess
+      SessionDuration: PT8H
