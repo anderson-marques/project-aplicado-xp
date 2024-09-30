@@ -1,4 +1,3 @@
-```markdown
 # Estabelecimento da Lista de Permissões e Papéis (Roles) Baseada nas Responsabilidades dos Usuários
 
 ## Objetivo
@@ -63,4 +62,3 @@ A definição clara e consistente de papéis e permissões é essencial para a s
 
 - [Gerenciamento de Acesso no AWS IAM](https://docs.aws.amazon.com/pt_br/IAM/latest/UserGuide/introduction_access-management.html)
 - [Práticas Recomendadas do AWS IAM](https://docs.aws.amazon.com/pt_br/IAM/latest/UserGuide/best-practices.html)
-```
