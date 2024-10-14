@@ -1,0 +1,43 @@
+name: Role Entitlements
+
+# Somente executa quando mesclado as mudanças na branch principal
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'historico/grupos_*.yaml'
+
+jobs:
+  update-roles:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Busca o codigo
+      uses: actions/checkout@v4
+
+    - name: Configura o Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Instala as dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Identifica os arquivos a serem comparados
+      id: find_files
+      run: |
+        # Encontra os dois arquivos mais recentes
+        files=($(ls grupos_*.yaml grupos_*.yml | sort -r | head -n 2))
+        echo "new_file=${files[0]}" >> $GITHUB_ENV
+        echo "old_file=${files[1]:-${files[0]}}" >> $GITHUB_ENV
+
+    - name: Executa o arquivo que altera o role entitlements
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'sa-east-1'  # Região de São Paulo
+        GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+      run: |
+        python scripts/entitlements_manager.py ${{ env.new_file }} ${{ env.old_file }}
